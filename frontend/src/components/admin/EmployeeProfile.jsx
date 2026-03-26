@@ -58,6 +58,16 @@ function EmployeeProfile() {
     }
   }
 
+  const handleActivate = async () => {
+    try {
+      await employeeAPI.activate(selectedEmployee.id)
+      fetchEmployees()
+      setSelectedEmployee(null)
+    } catch (error) {
+      console.error('Error activating employee:', error)
+    }
+  }
+
   return (
     <div className="container mx-auto px-6 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Employee Profile</h1>
@@ -186,9 +196,13 @@ function EmployeeProfile() {
                     <button onClick={() => setEditMode(true)} className="btn btn-primary">
                       Update
                     </button>
-                    {selectedEmployee.status === 'ACTIVE' && (
+                    {selectedEmployee.status === 'ACTIVE' ? (
                       <button onClick={handleDeactivate} className="btn btn-danger">
                         Deactivate
+                      </button>
+                    ) : (
+                      <button onClick={handleActivate} className="btn btn-success">
+                        Activate
                       </button>
                     )}
                   </>
