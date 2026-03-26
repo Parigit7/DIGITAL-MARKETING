@@ -170,7 +170,7 @@ const [showViewModal, setShowViewModal] = useState(false)
       {/* Tasks Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTasks.map((task) => (
-          <div key={task.id} className="card">
+          <div key={task.id} className="card relative flex flex-col min-h-64">
             <h3 className="text-lg font-semibold mb-2 text-gray-900">{task.title}</h3>
             {task.companyName && <p className="text-sm text-gray-600 mb-2">Company: {task.companyName}</p>}
 
@@ -178,11 +178,11 @@ const [showViewModal, setShowViewModal] = useState(false)
               <span className="font-semibold">Status:</span> {task.taskStatus.replace('_', ' ')}
             </p>
 
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-600 mb-4 flex-1">
               <span className="font-semibold">Completed Date:</span> {task.completedDate}
             </p>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 absolute bottom-6 left-6 right-6">
               <button onClick={() => handleEdit(task)} className="btn btn-primary btn-sm flex-1">
                 Update Status
               </button>
