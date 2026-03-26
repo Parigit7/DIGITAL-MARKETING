@@ -13,7 +13,7 @@ function EmployeeNavbar({ user, onLogout }) {
   return (
     <nav className="navbar fixed top-0 left-0 right-0 z-40">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div className="navbar-brand">IDEEZ</div>
+        <div className="navbar-brand">IDEA HUB</div>
 
         <div className="hidden md:flex navbar-nav">
           <NavLink to="/employee" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>

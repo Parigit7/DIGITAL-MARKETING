@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
     <div className="login-container">
       <div className="login-wrapper">
         <div className="login-brand">
-          <h1 className="login-title">IDEEZ</h1>
+          <h1 className="login-title">IDEA HUB</h1>
           <p className="login-subtitle">Digital Marketing Agency Management System</p>
         </div>
 
@@ -122,7 +122,7 @@ const handleSubmit = async (e) => {
         </form>
 
         <div className="login-footer">
-          <p>© 2024 IDEEZ. All rights reserved.</p>
+          <p>© 2024 IDEA HUB. All rights reserved.</p>
         </div>
       </div>
     </div>
