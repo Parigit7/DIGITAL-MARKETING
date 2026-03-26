@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 function EmployeeNavbar({ user, onLogout }) {
   const navigate = useNavigate()
@@ -16,15 +16,18 @@ function EmployeeNavbar({ user, onLogout }) {
         <div className="navbar-brand">IDEEZ</div>
 
         <div className="hidden md:flex navbar-nav">
-          <a href="/employee/my-tasks" className="nav-link">
+          <NavLink to="/employee" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/employee/my-tasks" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             My Tasks
-          </a>
-          <a href="/employee/my-salary" className="nav-link">
+          </NavLink>
+          <NavLink to="/employee/my-salary" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             My Salary
-          </a>
-          <a href="/employee/my-profile" className="nav-link">
+          </NavLink>
+          <NavLink to="/employee/my-profile" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             My Profile
-          </a>
+          </NavLink>
         </div>
 
         <div className="flex items-center gap-4">
@@ -49,15 +52,18 @@ function EmployeeNavbar({ user, onLogout }) {
 
       {mobileMenuOpen && (
         <div className="md:hidden bg-dark bg-opacity-95 px-6 py-4 absolute top-full left-0 right-0 navbar-nav flex-col">
-          <a href="/employee/my-tasks" className="nav-link mb-2">
+          <NavLink to="/employee" end className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/employee/my-tasks" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             My Tasks
-          </a>
-          <a href="/employee/my-salary" className="nav-link mb-2">
+          </NavLink>
+          <NavLink to="/employee/my-salary" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             My Salary
-          </a>
-          <a href="/employee/my-profile" className="nav-link mb-2">
+          </NavLink>
+          <NavLink to="/employee/my-profile" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             My Profile
-          </a>
+          </NavLink>
         </div>
       )}
     </nav>
