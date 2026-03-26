@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import AdminDashboard from './pages/AdminDashboard'
 import EmployeeDashboard from './pages/EmployeeDashboard'
@@ -27,7 +28,7 @@ function App() {
       <Routes>
         <Route 
           path="/" 
-          element={user ? <Navigate to={user.jobRole === "Admin" ? "/admin" : "/employee"} /> : <LoginPage onLogin={handleLogin} />}
+          element={user ? <Navigate to={user.jobRole === "Admin" ? "/admin" : "/employee"} /> : <HomePage />}
         />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route 

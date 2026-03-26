@@ -128,7 +128,6 @@
 
 /* Navbar Styles */
 .navbar {
-  @apply bg-dark border-b-4 border-primary shadow-custom-lg;
 }
 
 .navbar-brand {
