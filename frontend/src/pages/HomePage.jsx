@@ -14,12 +14,11 @@ function HomePage() {
       {/* Navigation Bar */}
       <nav className="navbar fixed top-0 left-0 right-0 z-40 bg-transparent border-b border-yellow-400 border-opacity-10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold text-yellow-400 tracking-wide">IDEA HUB</div>
           <button 
-            onClick={() => navigate('/login')} 
-            className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black rounded-full font-bold hover:shadow-lg hover:shadow-yellow-400/40 transition-all transform hover:-translate-y-1"
+            onClick={() => navigate('/')}
+            className="text-2xl font-bold text-yellow-400 tracking-wide hover:text-yellow-300 transition-colors cursor-pointer"
           >
-            Login
+            IDEA HUB
           </button>
         </div>
       </nav>
@@ -29,8 +28,8 @@ function HomePage() {
         <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Hero Text */}
           <div className="animate-fadeInUp">
-            <h1 className="text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight text-white">Manage Your Work</h1>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-yellow-400 mb-6 tracking-wide">Beautifully Simple</h2>
+            <h1 className="text-7xl lg:text-8xl font-black tracking-tight mb-4 leading-tight text-white">Manage Your Work</h1>
+            <h2 className="text-4xl lg:text-5xl font-semibold text-yellow-400 mb-6 tracking-wide">Beautifully Simple</h2>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed max-w-md">
               Track tasks, monitor salary, and achieve your goals in one intuitive platform designed for modern teams.
             </p>
@@ -42,9 +41,7 @@ function HomePage() {
               >
                 Get Started
               </button>
-              <button className="px-10 py-3 bg-transparent border-2 border-yellow-400 border-opacity-40 text-white font-bold rounded-full text-lg hover:bg-yellow-400 hover:bg-opacity-10 hover:border-yellow-400 hover:border-opacity-100 transition-all transform hover:-translate-y-1">
-                Learn More
-              </button>
+              
             </div>
           </div>
           

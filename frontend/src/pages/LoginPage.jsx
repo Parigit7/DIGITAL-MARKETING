@@ -60,6 +60,13 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="login-container">
+      <button 
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 px-6 py-2 bg-yellow-400 text-black font-bold rounded-full hover:bg-yellow-500 transition-all"
+      >
+        ← Back to Home
+      </button>
+
       <div className="login-wrapper">
         <div className="login-brand">
           <h1 className="login-title">IDEA HUB</h1>
