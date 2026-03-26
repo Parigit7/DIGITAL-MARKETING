@@ -11,36 +11,70 @@ function LoginPage({ onLogin }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+  //   setError('')
+  //   setLoading(true)
 
-    try {
-      const response = await authAPI.login(email, password)
-      const userData = {
-        ...response.data,
-        admin: true,
-      }
-      onLogin(userData)
-      navigate('/admin')
-    } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password')
-    } finally {
-      setLoading(false)
+  //   try {
+  //     const response = await authAPI.login(email, password)
+  //     onLogin(response.data)
+  //   } catch (err) {
+  //     setError(err.response?.data?.message || 'Invalid email or password')
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+const handleSubmit = async (e) => {
+  e.preventDefault()
+  setError('')
+  setLoading(true)
+
+  try {
+    const response = await authAPI.login(email, password)
+
+    const user = response.data
+
+    // ✅ Save to localStorage
+    localStorage.setItem("token", user.token)
+    localStorage.setItem("user", JSON.stringify(user))
+
+    // ✅ Update app state
+    onLogin(user)
+
+    // 🔥 ROLE-BASED REDIRECT
+    if (user.jobRole === "Admin") {
+      window.location.href = "/admin"
+    } else {
+      window.location.href = "/employee"
     }
+
+  } catch (err) {
+    setError(err.response?.data?.message || 'Invalid email or password')
+  } finally {
+    setLoading(false)
   }
+}
+
 
   return (
     <div className="login-container">
+      <button 
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 px-6 py-2 bg-yellow-400 text-black font-bold rounded-full hover:bg-yellow-500 transition-all"
+      >
+        ← Back to Home
+      </button>
+
       <div className="login-wrapper">
         <div className="login-brand">
-          <h1 className="login-title">IDEEZ</h1>
+          <h1 className="login-title">IDEA HUB</h1>
           <p className="login-subtitle">Digital Marketing Agency Management System</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
-          <h2 className="form-title">Admin Login</h2>
+          <h2 className="form-title">Login</h2>
 
           {error && (
             <div className="alert alert-error mb-4">
@@ -95,7 +129,7 @@ function LoginPage({ onLogin }) {
         </form>
 
         <div className="login-footer">
-          <p>© 2024 IDEEZ. All rights reserved.</p>
+          <p>© 2024 IDEA HUB. All rights reserved.</p>
         </div>
       </div>
     </div>

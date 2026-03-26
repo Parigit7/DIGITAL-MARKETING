@@ -3,12 +3,19 @@ import { taskAPI } from '../../services/api'
 
 function MyTasks({ user }) {
   const [tasks, setTasks] = useState([])
-  const [filterMonth, setFilterMonth] = useState('')
+  const [filterMonth, setFilterMonth] = useState('all')
   const [filterYear, setFilterYear] = useState(new Date().getFullYear())
   const [taskStatus, setTaskStatus] = useState('to-do')
   const [editingTask, setEditingTask] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+  const [selectedTask, setSelectedTask] = useState(null)
+const [showViewModal, setShowViewModal] = useState(false)
 
   const [formData, setFormData] = useState({
     taskStatus: 'TO_DO',
@@ -29,12 +36,30 @@ function MyTasks({ user }) {
       setLoading(false)
     }
   }
+  const handleView = (task) => {
+  setSelectedTask(task)
+  setShowViewModal(true)
+}
 
   const getFilteredTasks = () => {
     let filtered = tasks
 
     const statusMap = { 'to-do': 'TO_DO', 'in-progress': 'IN_PROGRESS', 'completed': 'COMPLETED' }
     filtered = filtered.filter((t) => t.taskStatus === statusMap[taskStatus])
+
+    // Filter by year and month
+    filtered = filtered.filter((task) => {
+      if (!task.assignedDate) return false
+      
+      const taskDate = new Date(task.assignedDate)
+      const taskYear = taskDate.getFullYear()
+      const taskMonth = taskDate.getMonth() + 1
+
+      const yearMatch = taskYear === parseInt(filterYear)
+      const monthMatch = filterMonth === 'all' || taskMonth === parseInt(filterMonth)
+
+      return yearMatch && monthMatch
+    })
 
     return filtered
   }
@@ -104,19 +129,23 @@ function MyTasks({ user }) {
               onChange={(e) => setFilterYear(e.target.value)}
               min="2020"
               max="2030"
+              required
             />
           </div>
 
           <div className="form-group">
-            <label>Month (Optional)</label>
-            <input
-              type="number"
+            <label>Month</label>
+            <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
-              min="1"
-              max="12"
-              placeholder="Leave empty for all months"
-            />
+            >
+              <option value="all">All Months</option>
+              {monthNames.map((month, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -141,7 +170,7 @@ function MyTasks({ user }) {
       {/* Tasks Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTasks.map((task) => (
-          <div key={task.id} className="card">
+          <div key={task.id} className="card relative flex flex-col min-h-64">
             <h3 className="text-lg font-semibold mb-2 text-gray-900">{task.title}</h3>
             {task.companyName && <p className="text-sm text-gray-600 mb-2">Company: {task.companyName}</p>}
 
@@ -149,21 +178,80 @@ function MyTasks({ user }) {
               <span className="font-semibold">Status:</span> {task.taskStatus.replace('_', ' ')}
             </p>
 
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-600 mb-4 flex-1">
               <span className="font-semibold">Completed Date:</span> {task.completedDate}
             </p>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 absolute bottom-6 left-6 right-6">
               <button onClick={() => handleEdit(task)} className="btn btn-primary btn-sm flex-1">
                 Update Status
               </button>
-              <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger btn-sm flex-1">
-                Delete
-              </button>
+              <button 
+              onClick={() => handleView(task)} 
+              className="btn btn-secondary btn-sm flex-1"
+            >
+              View
+            </button>
             </div>
           </div>
         ))}
       </div>
+      {showViewModal && selectedTask && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+
+    <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative animate-fadeIn">
+
+      {/* Close */}
+      <button
+        onClick={() => setShowViewModal(false)}
+        className="absolute top-3 right-4 text-gray-500 hover:text-black text-xl"
+      >
+        ×
+      </button>
+
+      {/* Title */}
+      <h2 className="text-2xl font-bold mb-4">
+        {selectedTask.title}
+      </h2>
+
+      {/* Content */}
+      <div className="space-y-3 text-sm text-gray-700">
+
+        <p><strong>Company:</strong> {selectedTask.companyName || 'N/A'}</p>
+
+        <p><strong>Status:</strong> {selectedTask.taskStatus.replace('_', ' ')}</p>
+
+        <p><strong>Completed Date:</strong> {selectedTask.completedDate}</p>
+
+        <p><strong>Salary:</strong> Rs. {selectedTask.salary || 0}</p>
+
+        <div>
+          <strong>Description:</strong>
+          <p className="mt-1 text-gray-600">
+            {selectedTask.description}
+          </p>
+        </div>
+
+        {selectedTask.links && (
+          <div>
+            <strong>Links:</strong>
+            <p className="mt-1">
+              <a 
+                href={selectedTask.links} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 hover:underline break-all"
+              >
+                {selectedTask.links}
+              </a>
+            </p>
+          </div>
+        )}
+
+      </div>
+    </div>
+  </div>
+)}
 
       {filteredTasks.length === 0 && !loading && (
         <div className="card text-center py-12">

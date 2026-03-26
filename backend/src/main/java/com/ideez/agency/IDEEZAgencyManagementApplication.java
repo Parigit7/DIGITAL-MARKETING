@@ -18,7 +18,7 @@ public class IDEEZAgencyManagementApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // ✅ FIXED
+                registry.addMapping("/**") //
                         .allowedOrigins("http://localhost:5173", "http://localhost:3000","http://localhost:5174")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

@@ -4,9 +4,14 @@ import { salaryAPI, taskAPI } from '../../services/api'
 function MySalary({ user }) {
   const [salaryData, setSalaryData] = useState(null)
   const [tasks, setTasks] = useState([])
-  const [filterMonth, setFilterMonth] = useState('')
+  const [filterMonth, setFilterMonth] = useState('all')
   const [filterYear, setFilterYear] = useState(new Date().getFullYear())
   const [loading, setLoading] = useState(false)
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
 
   useEffect(() => {
     fetchSalaryData()
@@ -18,10 +23,10 @@ function MySalary({ user }) {
     try {
       let response
 
-      if (filterMonth && filterYear) {
+      if (filterMonth !== 'all' && filterYear) {
         response = await salaryAPI.getByEmployeeAndMonth(user.employeeId, filterYear, filterMonth)
-      } else {
-        // Get all completed tasks for this employee
+      } else if (filterYear) {
+        // Get all completed tasks for this employee for the year
         const tasksResponse = await taskAPI.getByEmployee(user.employeeId)
         const completedTasks = tasksResponse.data.filter((t) => t.taskStatus === 'COMPLETED')
         const totalSalary = completedTasks.reduce((sum, t) => sum + parseFloat(t.salary || 0), 0)
@@ -59,12 +64,15 @@ function MySalary({ user }) {
     fetchSalaryData()
   }, [filterMonth, filterYear])
 
-  const filteredTasks = filterMonth && filterYear
+  const filteredTasks = filterMonth !== 'all' && filterYear
     ? tasks.filter((t) => {
         const date = new Date(t.completedDate)
         return date.getFullYear() === parseInt(filterYear) && (date.getMonth() + 1) === parseInt(filterMonth)
       })
-    : tasks
+    : tasks.filter((t) => {
+        const date = new Date(t.completedDate)
+        return date.getFullYear() === parseInt(filterYear)
+      })
 
   return (
     <div className="container mx-auto px-6 py-8">
@@ -81,19 +89,23 @@ function MySalary({ user }) {
               onChange={(e) => setFilterYear(e.target.value)}
               min="2020"
               max="2030"
+              required
             />
           </div>
 
           <div className="form-group">
-            <label>Month (Optional)</label>
-            <input
-              type="number"
+            <label>Month</label>
+            <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
-              min="1"
-              max="12"
-              placeholder="Leave empty for all months"
-            />
+            >
+              <option value="all">All Months</option>
+              {monthNames.map((month, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -136,6 +148,7 @@ function MySalary({ user }) {
                   <th>Task Title</th>
                   <th>Company</th>
                   <th>Completed Date</th>
+                  <th>Links</th>
                   <th>Assigned Salary</th>
                 </tr>
               </thead>
@@ -145,6 +158,21 @@ function MySalary({ user }) {
                     <td className="font-semibold">{task.title}</td>
                     <td>{task.companyName || '-'}</td>
                     <td>{task.completedDate}</td>
+                    <td>
+                      {task.links ? (
+                        <a
+                          href={task.links}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 hover:underline text-sm truncate max-w-xs block"
+                          title={task.links}
+                        >
+                          View Links
+                        </a>
+                      ) : (
+                        <span className="text-gray-400 text-sm">-</span>
+                      )}
+                    </td>
                     <td className={task.salary ? 'text-primary font-semibold' : 'text-red-600'}>
                       {task.salary ? `Rs. ${parseFloat(task.salary).toFixed(2)}` : 'Not Salary Updated'}
                     </td>

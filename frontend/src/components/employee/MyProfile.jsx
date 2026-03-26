@@ -20,6 +20,15 @@ function MyProfile({ user }) {
     }
   }
 
+  const handleActivate = async () => {
+    try {
+      await employeeAPI.activate(user.employeeId)
+      fetchProfile()
+    } catch (error) {
+      console.error('Error activating profile:', error)
+    }
+  }
+
   return (
     <div className="container mx-auto px-6 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">My Profile</h1>
@@ -108,6 +117,19 @@ function MyProfile({ user }) {
           </div>
 
           <div className="border-t border-gray-300 pt-6">
+            {profileData.status !== 'ACTIVE' && (
+              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-yellow-800 mb-4">
+                  Your account is currently <span className="font-semibold">INACTIVE</span>. Click the button below to reactivate your account.
+                </p>
+                <button
+                  onClick={handleActivate}
+                  className="btn btn-success"
+                >
+                  Activate Account
+                </button>
+              </div>
+            )}
             <p className="text-gray-600 text-sm text-center">
               Note: Your profile information cannot be edited by you. Please contact the admin if you need to update any information.
             </p>

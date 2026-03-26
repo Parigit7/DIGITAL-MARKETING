@@ -58,6 +58,16 @@ function EmployeeProfile() {
     }
   }
 
+  const handleActivate = async () => {
+    try {
+      await employeeAPI.activate(selectedEmployee.id)
+      fetchEmployees()
+      setSelectedEmployee(null)
+    } catch (error) {
+      console.error('Error activating employee:', error)
+    }
+  }
+
   return (
     <div className="container mx-auto px-6 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Employee Profile</h1>
@@ -96,87 +106,178 @@ function EmployeeProfile() {
             <div className="card">
               <h2 className="text-2xl font-semibold mb-6">{selectedEmployee.name}</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Basic Information */}
                 <div>
-                  <label className="font-semibold text-gray-700">Email</label>
-                  {editMode ? (
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  ) : (
-                    <p className="text-gray-600">{selectedEmployee.email}</p>
-                  )}
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Email</label>
+                      {editMode ? (
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.email}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Job Role</label>
+                      {editMode ? (
+                        <input
+                          type="text"
+                          name="jobRole"
+                          value={formData.jobRole}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.jobRole}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">NIC</label>
+                      {editMode ? (
+                        <input
+                          type="text"
+                          name="nic"
+                          value={formData.nic || ''}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.nic || 'N/A'}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Birthday</label>
+                      {editMode ? (
+                        <input
+                          type="date"
+                          name="birthday"
+                          value={formData.birthday || ''}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.birthday || 'N/A'}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Gender</label>
+                      {editMode ? (
+                        <select
+                          name="gender"
+                          value={formData.gender || ''}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        >
+                          <option value="">Select gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.gender || 'N/A'}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Status</label>
+                      <p className={`font-semibold ${selectedEmployee.status === 'ACTIVE' ? 'text-green-600' : 'text-red-600'}`}>
+                        {selectedEmployee.status}
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Join Date</label>
+                      {editMode ? (
+                        <input
+                          type="date"
+                          name="joinDate"
+                          value={formData.joinDate || ''}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.joinDate || 'N/A'}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
+                {/* Contact Information */}
                 <div>
-                  <label className="font-semibold text-gray-700">Job Role</label>
-                  {editMode ? (
-                    <input
-                      type="text"
-                      name="jobRole"
-                      value={formData.jobRole}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  ) : (
-                    <p className="text-gray-600">{selectedEmployee.jobRole}</p>
-                  )}
-                </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Phone Number</label>
+                      {editMode ? (
+                        <input
+                          type="tel"
+                          name="phoneNo"
+                          value={formData.phoneNo}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.phoneNo}</p>
+                      )}
+                    </div>
 
-                <div>
-                  <label className="font-semibold text-gray-700">Phone</label>
-                  {editMode ? (
-                    <input
-                      type="tel"
-                      name="phoneNo"
-                      value={formData.phoneNo}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  ) : (
-                    <p className="text-gray-600">{selectedEmployee.phoneNo}</p>
-                  )}
-                </div>
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">WhatsApp Number</label>
+                      {editMode ? (
+                        <input
+                          type="tel"
+                          name="whatsappNo"
+                          value={formData.whatsappNo}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.whatsappNo}</p>
+                      )}
+                    </div>
 
-                <div>
-                  <label className="font-semibold text-gray-700">WhatsApp</label>
-                  {editMode ? (
-                    <input
-                      type="tel"
-                      name="whatsappNo"
-                      value={formData.whatsappNo}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  ) : (
-                    <p className="text-gray-600">{selectedEmployee.whatsappNo}</p>
-                  )}
-                </div>
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Address</label>
+                      {editMode ? (
+                        <textarea
+                          name="address"
+                          value={formData.address || ''}
+                          onChange={handleChange}
+                          rows="3"
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.address || 'N/A'}</p>
+                      )}
+                    </div>
 
-                <div className="md:col-span-2">
-                  <label className="font-semibold text-gray-700">Address</label>
-                  {editMode ? (
-                    <input
-                      type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  ) : (
-                    <p className="text-gray-600">{selectedEmployee.address}</p>
-                  )}
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="font-semibold text-gray-700">Status</label>
-                  <p className={`font-semibold ${selectedEmployee.status === 'ACTIVE' ? 'text-green-600' : 'text-red-600'}`}>
-                    {selectedEmployee.status}
-                  </p>
+                    <div>
+                      <label className="font-semibold text-gray-700 text-sm">Job Description</label>
+                      {editMode ? (
+                        <textarea
+                          name="jobDescription"
+                          value={formData.jobDescription || ''}
+                          onChange={handleChange}
+                          rows="3"
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      ) : (
+                        <p className="text-gray-600">{selectedEmployee.jobDescription || 'N/A'}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -186,9 +287,13 @@ function EmployeeProfile() {
                     <button onClick={() => setEditMode(true)} className="btn btn-primary">
                       Update
                     </button>
-                    {selectedEmployee.status === 'ACTIVE' && (
+                    {selectedEmployee.status === 'ACTIVE' ? (
                       <button onClick={handleDeactivate} className="btn btn-danger">
                         Deactivate
+                      </button>
+                    ) : (
+                      <button onClick={handleActivate} className="btn btn-success">
+                        Activate
                       </button>
                     )}
                   </>

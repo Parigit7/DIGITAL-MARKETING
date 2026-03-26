@@ -8,6 +8,7 @@ import com.ideez.agency.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class TaskService {
         task.setDescription(taskDTO.getDescription());
         task.setLinks(taskDTO.getLinks());
         task.setCompletedDate(taskDTO.getCompletedDate());
-        task.setSalary(taskDTO.getSalary());
+        task.setSalary(new BigDecimal(taskDTO.getSalary().toString()));
         task.setTaskStatus("TO_DO");
 
         Optional<Employee> employee = employeeRepository.findById(taskDTO.getAssignedEmployeeId());

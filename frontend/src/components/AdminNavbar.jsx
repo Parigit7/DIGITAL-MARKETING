@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 function AdminNavbar({ user, onLogout }) {
   const navigate = useNavigate()
@@ -13,21 +13,24 @@ function AdminNavbar({ user, onLogout }) {
   return (
     <nav className="navbar fixed top-0 left-0 right-0 z-40">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div className="navbar-brand">IDEEZ</div>
+        <div className="navbar-brand">IDEA HUB</div>
 
         <div className="hidden md:flex navbar-nav">
-          <Link to="/admin/add-employee" className="nav-link">
+          <NavLink to="/admin" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/admin/add-employee" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             Add Employee
-          </Link>
-          <Link to="/admin/employee-profile" className="nav-link">
+          </NavLink>
+          <NavLink to="/admin/employee-profile" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             Employee Profile
-          </Link>
-          <Link to="/admin/task-management" className="nav-link">
+          </NavLink>
+          <NavLink to="/admin/task-management" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             Task Management
-          </Link>
-          <Link to="/admin/salary-management" className="nav-link">
+          </NavLink>
+          <NavLink to="/admin/salary-management" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`.trim()}>
             Salary Management
-          </Link>
+          </NavLink>
         </div>
 
         <div className="flex items-center gap-4">
@@ -52,18 +55,21 @@ function AdminNavbar({ user, onLogout }) {
 
       {mobileMenuOpen && (
         <div className="md:hidden bg-dark bg-opacity-95 px-6 py-4 absolute top-full left-0 right-0 navbar-nav flex-col">
-          <Link to="/admin/add-employee" className="nav-link mb-2">
+          <NavLink to="/admin" end className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/admin/add-employee" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             Add Employee
-          </Link>
-          <Link to="/admin/employee-profile" className="nav-link mb-2">
+          </NavLink>
+          <NavLink to="/admin/employee-profile" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             Employee Profile
-          </Link>
-          <Link to="/admin/task-management" className="nav-link mb-2">
+          </NavLink>
+          <NavLink to="/admin/task-management" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             Task Management
-          </Link>
-          <Link to="/admin/salary-management" className="nav-link mb-2">
+          </NavLink>
+          <NavLink to="/admin/salary-management" className={({ isActive }) => `nav-link mb-2 ${isActive ? 'active' : ''}`.trim()}>
             Salary Management
-          </Link>
+          </NavLink>
         </div>
       )}
     </nav>
