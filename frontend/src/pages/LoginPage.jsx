@@ -11,25 +11,52 @@ function LoginPage({ onLogin }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+  //   setError('')
+  //   setLoading(true)
 
-    try {
-      const response = await authAPI.login(email, password)
-      const userData = {
-        ...response.data,
-        admin: true,
-      }
-      onLogin(userData)
-      navigate('/admin')
-    } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password')
-    } finally {
-      setLoading(false)
+  //   try {
+  //     const response = await authAPI.login(email, password)
+  //     onLogin(response.data)
+  //   } catch (err) {
+  //     setError(err.response?.data?.message || 'Invalid email or password')
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+const handleSubmit = async (e) => {
+  e.preventDefault()
+  setError('')
+  setLoading(true)
+
+  try {
+    const response = await authAPI.login(email, password)
+
+    const user = response.data
+
+    // ✅ Save to localStorage
+    localStorage.setItem("token", user.token)
+    localStorage.setItem("user", JSON.stringify(user))
+
+    // ✅ Update app state
+    onLogin(user)
+
+    // 🔥 ROLE-BASED REDIRECT
+    if (user.jobRole === "Admin") {
+      window.location.href = "/admin"
+    } else {
+      window.location.href = "/employee"
     }
+
+  } catch (err) {
+    setError(err.response?.data?.message || 'Invalid email or password')
+  } finally {
+    setLoading(false)
   }
+}
+
 
   return (
     <div className="login-container">
