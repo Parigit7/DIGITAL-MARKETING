@@ -50,25 +50,29 @@ function HomePage() {
           
           {/* Hero Visual */}
           <div className="hidden lg:flex relative h-80 items-center justify-center animate-fadeInRight">
-            <div className="relative w-72 h-72">
-              {/* Dashboard Card */}
-              <div className="absolute top-0 left-0 w-24 h-24 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-2xl p-3 flex flex-col items-center justify-center gap-1 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer" style={{animation: 'float 6s ease-in-out infinite'}}>
-                <div className="text-3xl">📊</div>
-                <div className="w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 to-opacity-30 rounded-full" style={{animation: 'slideIn 1.5s ease infinite'}}></div>
-                <div className="w-4/5 h-1 bg-gradient-to-r from-yellow-400 to-yellow-400 to-opacity-30 rounded-full" style={{animation: 'slideIn 1.5s ease infinite 0.3s'}}></div>
+            <div className="relative w-80 h-80">
+              {/* Camera Card - Content Creation */}
+              <div className="absolute top-0 left-0 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite'}}>
+                <div className="text-5xl">📷</div>
+                <div className="text-xs font-semibold text-yellow-300">Content</div>
               </div>
 
-              {/* Task Card */}
-              <div className="absolute top-24 right-0 w-24 h-24 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-2xl p-3 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer" style={{animation: 'float 6s ease-in-out infinite 0.5s'}}>
-                <div className="text-3xl">✓</div>
-                <div className="w-1.5 h-1.5 bg-yellow-400 bg-opacity-60 rounded-full" style={{animation: 'pulse 2s ease-in-out infinite'}}></div>
-                <div className="w-1.5 h-1.5 bg-yellow-400 bg-opacity-60 rounded-full" style={{animation: 'pulse 2s ease-in-out infinite 0.3s'}}></div>
+              {/* Trending Chart Card - Analytics */}
+              <div className="absolute top-20 right-0 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite 0.5s'}}>
+                <div className="text-5xl">📈</div>
+                <div className="text-xs font-semibold text-yellow-300">Analytics</div>
               </div>
 
-              {/* Salary Card */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-2xl p-3 flex flex-col items-center justify-center gap-1 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer" style={{animation: 'float 6s ease-in-out infinite 1s'}}>
-                <div className="text-3xl">💰</div>
-                <div className="text-lg font-bold text-yellow-400" style={{animation: 'float 3s ease-in-out infinite'}}>$5k</div>
+              {/* Megaphone Card - Marketing */}
+              <div className="absolute bottom-0 left-1/4 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite 1s'}}>
+                <div className="text-5xl">📢</div>
+                <div className="text-xs font-semibold text-yellow-300">Campaign</div>
+              </div>
+
+              {/* Lightbulb Card - Strategy */}
+              <div className="absolute bottom-5 right-5 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite 1.5s'}}>
+                <div className="text-5xl">💡</div>
+                <div className="text-xs font-semibold text-yellow-300">Strategy</div>
               </div>
             </div>
           </div>
