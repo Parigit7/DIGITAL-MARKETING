@@ -3,12 +3,17 @@ import { taskAPI } from '../../services/api'
 
 function MyTasks({ user }) {
   const [tasks, setTasks] = useState([])
-  const [filterMonth, setFilterMonth] = useState('')
+  const [filterMonth, setFilterMonth] = useState('all')
   const [filterYear, setFilterYear] = useState(new Date().getFullYear())
   const [taskStatus, setTaskStatus] = useState('to-do')
   const [editingTask, setEditingTask] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
   const [selectedTask, setSelectedTask] = useState(null)
 const [showViewModal, setShowViewModal] = useState(false)
 
@@ -41,6 +46,20 @@ const [showViewModal, setShowViewModal] = useState(false)
 
     const statusMap = { 'to-do': 'TO_DO', 'in-progress': 'IN_PROGRESS', 'completed': 'COMPLETED' }
     filtered = filtered.filter((t) => t.taskStatus === statusMap[taskStatus])
+
+    // Filter by year and month
+    filtered = filtered.filter((task) => {
+      if (!task.assignedDate) return false
+      
+      const taskDate = new Date(task.assignedDate)
+      const taskYear = taskDate.getFullYear()
+      const taskMonth = taskDate.getMonth() + 1
+
+      const yearMatch = taskYear === parseInt(filterYear)
+      const monthMatch = filterMonth === 'all' || taskMonth === parseInt(filterMonth)
+
+      return yearMatch && monthMatch
+    })
 
     return filtered
   }
@@ -110,19 +129,23 @@ const [showViewModal, setShowViewModal] = useState(false)
               onChange={(e) => setFilterYear(e.target.value)}
               min="2020"
               max="2030"
+              required
             />
           </div>
 
           <div className="form-group">
-            <label>Month (Optional)</label>
-            <input
-              type="number"
+            <label>Month</label>
+            <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
-              min="1"
-              max="12"
-              placeholder="Leave empty for all months"
-            />
+            >
+              <option value="all">All Months</option>
+              {monthNames.map((month, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

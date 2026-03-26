@@ -5,9 +5,14 @@ function SalaryManagement() {
   const [salaries, setSalaries] = useState([])
   const [employees, setEmployees] = useState([])
   const [filterEmployee, setFilterEmployee] = useState('all')
-  const [filterMonth, setFilterMonth] = useState('')
+  const [filterMonth, setFilterMonth] = useState('all')
   const [filterYear, setFilterYear] = useState(new Date().getFullYear())
   const [loading, setLoading] = useState(false)
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
 
   useEffect(() => {
     fetchEmployees()
@@ -26,7 +31,7 @@ function SalaryManagement() {
   const fetchSalaries = async () => {
     setLoading(true)
     try {
-      if (filterMonth && filterYear) {
+      if (filterMonth !== 'all' && filterYear) {
         const response = await salaryAPI.getAll(filterYear, filterMonth)
         setSalaries(response.data)
       } else if (filterYear) {
@@ -73,19 +78,23 @@ function SalaryManagement() {
               onChange={(e) => setFilterYear(e.target.value)}
               min="2020"
               max="2030"
+              required
             />
           </div>
 
           <div className="form-group">
-            <label>Month (Optional)</label>
-            <input
-              type="number"
+            <label>Month</label>
+            <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
-              min="1"
-              max="12"
-              placeholder="Leave empty for all months"
-            />
+            >
+              <option value="all">All Months</option>
+              {monthNames.map((month, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

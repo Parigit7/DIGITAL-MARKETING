@@ -4,13 +4,18 @@ import { taskAPI, employeeAPI } from '../../services/api'
 function TaskManagement() {
   const [tasks, setTasks] = useState([])
   const [filterEmployee, setFilterEmployee] = useState('all')
-  const [filterMonth, setFilterMonth] = useState('')
+  const [filterMonth, setFilterMonth] = useState('all')
   const [filterYear, setFilterYear] = useState(new Date().getFullYear())
   const [taskStatus, setTaskStatus] = useState('to-do')
   const [employees, setEmployees] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
   const [loading, setLoading] = useState(false)
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
 
   const [formData, setFormData] = useState({
     title: '',
@@ -55,6 +60,20 @@ function TaskManagement() {
 
     const statusMap = { 'to-do': 'TO_DO', 'in-progress': 'IN_PROGRESS', 'completed': 'COMPLETED' }
     filtered = filtered.filter((t) => t.taskStatus === statusMap[taskStatus])
+
+    // Filter by year and month
+    filtered = filtered.filter((task) => {
+      if (!task.assignedDate) return false
+      
+      const taskDate = new Date(task.assignedDate)
+      const taskYear = taskDate.getFullYear()
+      const taskMonth = taskDate.getMonth() + 1
+
+      const yearMatch = taskYear === parseInt(filterYear)
+      const monthMatch = filterMonth === 'all' || taskMonth === parseInt(filterMonth)
+
+      return yearMatch && monthMatch
+    })
 
     return filtered
   }
@@ -163,19 +182,23 @@ function TaskManagement() {
               onChange={(e) => setFilterYear(e.target.value)}
               min="2020"
               max="2030"
+              required
             />
           </div>
 
           <div className="form-group">
             <label>Month</label>
-            <input
-              type="number"
+            <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
-              min="1"
-              max="12"
-              placeholder="Optional"
-            />
+            >
+              <option value="all">All Months</option>
+              {monthNames.map((month, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
