@@ -49,30 +49,35 @@ function HomePage() {
           </div>
           
           {/* Hero Visual */}
-          <div className="hidden lg:flex relative h-80 items-center justify-center animate-fadeInRight">
-            <div className="relative w-80 h-80">
-              {/* Camera Card - Content Creation */}
-              <div className="absolute top-0 left-0 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite'}}>
-                <div className="text-5xl">📷</div>
-                <div className="text-xs font-semibold text-yellow-300">Content</div>
+          <div className="hidden lg:flex relative h-96 items-center justify-center animate-fadeInRight">
+            {/* Large Yellow Circle Background */}
+            <div className="absolute w-96 h-96 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full blur-2xl opacity-20 pointer-events-none" style={{animation: 'pulse 4s ease-in-out infinite'}}></div>
+            <div className="absolute w-80 h-80 border-2 border-yellow-400 border-opacity-30 rounded-full" style={{animation: 'rotate 20s linear infinite'}}></div>
+            
+            <div className="relative w-96 h-96 flex items-center justify-center">
+              {/* Center Icon */}
+              <div className="absolute z-20 w-24 h-24 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-2xl shadow-yellow-400/50" style={{animation: 'float 3s ease-in-out infinite'}}>
+                <span className="text-5xl">✨</span>
               </div>
 
-              {/* Trending Chart Card - Analytics */}
-              <div className="absolute top-20 right-0 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite 0.5s'}}>
-                <div className="text-5xl">📈</div>
-                <div className="text-xs font-semibold text-yellow-300">Analytics</div>
+              {/* Card 1 - Top Left */}
+              <div className="absolute top-0 left-0 w-24 h-24 bg-black/40 border border-yellow-400/60 rounded-2xl p-3 flex flex-col items-center justify-center backdrop-blur-md hover:bg-yellow-400/20 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/20" style={{animation: 'float 6s ease-in-out infinite 0s'}}>
+                <div className="text-4xl">📷</div>
               </div>
 
-              {/* Megaphone Card - Marketing */}
-              <div className="absolute bottom-0 left-1/4 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite 1s'}}>
-                <div className="text-5xl">📢</div>
-                <div className="text-xs font-semibold text-yellow-300">Campaign</div>
+              {/* Card 2 - Top Right */}
+              <div className="absolute top-6 right-0 w-24 h-24 bg-black/40 border border-yellow-400/60 rounded-2xl p-3 flex flex-col items-center justify-center backdrop-blur-md hover:bg-yellow-400/20 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/20" style={{animation: 'float 6s ease-in-out infinite 0.3s'}}>
+                <div className="text-4xl">📊</div>
               </div>
 
-              {/* Lightbulb Card - Strategy */}
-              <div className="absolute bottom-5 right-5 w-28 h-28 bg-yellow-400 bg-opacity-10 border border-yellow-400 border-opacity-25 rounded-3xl p-4 flex flex-col items-center justify-center gap-2 backdrop-blur-xl hover:bg-yellow-400 hover:bg-opacity-15 hover:border-yellow-400 hover:border-opacity-50 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/10" style={{animation: 'float 6s ease-in-out infinite 1.5s'}}>
-                <div className="text-5xl">💡</div>
-                <div className="text-xs font-semibold text-yellow-300">Strategy</div>
+              {/* Card 3 - Bottom Right */}
+              <div className="absolute bottom-0 right-2 w-24 h-24 bg-black/40 border border-yellow-400/60 rounded-2xl p-3 flex flex-col items-center justify-center backdrop-blur-md hover:bg-yellow-400/20 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/20" style={{animation: 'float 6s ease-in-out infinite 0.6s'}}>
+                <div className="text-4xl">📱</div>
+              </div>
+
+              {/* Card 4 - Bottom Left */}
+              <div className="absolute bottom-4 left-3 w-24 h-24 bg-black/40 border border-yellow-400/60 rounded-2xl p-3 flex flex-col items-center justify-center backdrop-blur-md hover:bg-yellow-400/20 transition-all transform hover:-translate-y-2 cursor-pointer shadow-lg shadow-yellow-400/20" style={{animation: 'float 6s ease-in-out infinite 0.9s'}}>
+                <div className="text-4xl">🎯</div>
               </div>
             </div>
           </div>
@@ -95,6 +100,11 @@ function HomePage() {
         @keyframes slideIn {
           0%, 100% { width: 100%; opacity: 0.6; }
           50% { width: 85%; opacity: 1; }
+        }
+        
+        @keyframes rotate {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
         
         @keyframes fadeInUp {
