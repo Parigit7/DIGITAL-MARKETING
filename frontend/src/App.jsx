@@ -12,6 +12,8 @@ function App() {
     setUser(userData)
     localStorage.setItem('user', JSON.stringify(userData))
     localStorage.setItem('token', userData.token)
+
+    setUser(userData)
   }
 
   const handleLogout = () => {
@@ -25,12 +27,12 @@ function App() {
       <Routes>
         <Route 
           path="/" 
-          element={user ? <Navigate to={user.admin ? "/admin" : "/employee"} /> : <LoginPage onLogin={handleLogin} />}
+          element={user ? <Navigate to={user.jobRole === "Admin" ? "/admin" : "/employee"} /> : <LoginPage onLogin={handleLogin} />}
         />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route 
           path="/admin/*" 
-          element={user && user.admin ? <AdminDashboard user={user} onLogout={handleLogout} /> : <Navigate to="/login" />}
+          element={user && user.jobRole === "Admin" ? <AdminDashboard user={user} onLogout={handleLogout} /> : <Navigate to="/login" />}
         />
         <Route 
           path="/employee/*" 
