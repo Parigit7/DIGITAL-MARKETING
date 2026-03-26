@@ -1,0 +1,33 @@
+# Backend
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.idea/
+backend/*.iml
+backend/*.jar
+backend/bin/
+backend/.DS_Store
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.idea/
+frontend/.vscode/
+frontend/.DS_Store
+frontend/coverage/
+
+# General
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+.env.local
+*.log

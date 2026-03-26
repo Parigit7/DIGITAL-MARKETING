@@ -1,0 +1,8 @@
+/* Dashboard Styles */
+.dashboard {
+  @apply min-h-screen bg-gray-50;
+}
+
+.dashboard-content {
+  @apply pt-20;
+}
