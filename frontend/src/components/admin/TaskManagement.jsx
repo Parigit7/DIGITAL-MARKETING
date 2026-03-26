@@ -355,7 +355,7 @@ function TaskManagement() {
                 <input
                   type="number"
                   name="salary"
-                  value={formData.salary}
+                  value={formData.salary.toString()}
                   onChange={handleChange}
                   step="0.01"
                 />
