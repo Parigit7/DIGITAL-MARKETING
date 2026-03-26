@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from 'recharts'
 import { salaryAPI, taskAPI } from '../../services/api'
 
 function EmployeeHome({ user }) {
@@ -79,86 +80,78 @@ function EmployeeHome({ user }) {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-6 py-16 max-w-6xl">
+      <div className="container mx-auto px-6 py-12 max-w-6xl">
         {/* Header Section */}
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user.name}</h1>
-          <p className="text-gray-500">Your performance dashboard</p>
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-gray-900 mb-1">Welcome back, {user.name}</h1>
+          <p className="text-gray-500 font-medium">Your performance dashboard</p>
         </div>
 
         {/* Salary Card */}
-        <div className="mb-8">
-          <div className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl shadow-sm p-5 border border-yellow-200 hover:shadow-md transition">
-            <p className="text-yellow-700 text-xs font-semibold mb-2 uppercase tracking-wide">Current Month Salary</p>
-            <h2 className="text-3xl font-bold text-yellow-600">{formatCurrency(currentMonthSalary)}</h2>
+        <div className="mb-10">
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl shadow-lg p-8 border border-purple-200 hover:shadow-xl transition duration-300">
+            <p className="text-purple-700 text-sm font-semibold mb-3 uppercase tracking-wide">This Month Salary</p>
+            <h2 className="text-4xl font-bold text-purple-900">{formatCurrency(currentMonthSalary)}</h2>
           </div>
         </div>
 
-        {/* Task Statistics */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Task Statistics</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Total Tasks */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200 hover:shadow-md hover:border-gray-300 transition">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-2">Total Tasks</p>
-                  <p className="text-3xl font-bold text-gray-900">{taskStats.total}</p>
-                </div>
-                <span className="text-gray-400 text-2xl">📋</span>
-              </div>
+        {/* Task Statistics with Circle Chart */}
+        <div className="mb-10">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Task Statistics</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Circle Chart */}
+            <div className="lg:col-span-2 bg-white rounded-2xl shadow-md p-8 border border-gray-100">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={[
+                      { name: 'Completed', value: taskStats.completed, fill: '#10b981' },
+                      { name: 'In Progress', value: taskStats.inProgress, fill: '#f59e0b' },
+                      { name: 'To Do', value: taskStats.toDo, fill: '#ef4444' },
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    <Cell fill="#10b981" />
+                    <Cell fill="#f59e0b" />
+                    <Cell fill="#ef4444" />
+                  </Pie>
+                  <Tooltip
+                    formatter={(value) => value}
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  />
+                  <Legend verticalAlign="bottom" height={36} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
 
-            {/* Completed */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200 hover:shadow-md hover:border-green-300 transition">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-2">Completed</p>
-                  <p className="text-3xl font-bold text-green-600">{taskStats.completed}</p>
-                </div>
-                <span className="text-green-500 text-2xl">✓</span>
+            {/* Stats Summary */}
+            <div className="space-y-4">
+              <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+                <p className="text-gray-500 text-sm font-semibold mb-2">Total Tasks</p>
+                <p className="text-4xl font-bold text-gray-900">{taskStats.total}</p>
               </div>
-            </div>
 
-            {/* In Progress */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200 hover:shadow-md hover:border-blue-300 transition">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-2">In Progress</p>
-                  <p className="text-3xl font-bold text-blue-600">{taskStats.inProgress}</p>
-                </div>
-                <span className="text-blue-500 text-2xl">→</span>
+              <div className="bg-white rounded-2xl shadow-md p-6 border border-green-100">
+                <p className="text-gray-500 text-sm font-semibold mb-2">Completed</p>
+                <p className="text-4xl font-bold text-green-600">{taskStats.completed}</p>
               </div>
-            </div>
 
-            {/* To Do */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200 hover:shadow-md hover:border-amber-300 transition">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium mb-2">To Do</p>
-                  <p className="text-3xl font-bold text-amber-600">{taskStats.toDo}</p>
-                </div>
-                <span className="text-amber-500 text-2xl">•</span>
+              <div className="bg-white rounded-2xl shadow-md p-6 border border-amber-100">
+                <p className="text-gray-500 text-sm font-semibold mb-2">In Progress</p>
+                <p className="text-4xl font-bold text-amber-600">{taskStats.inProgress}</p>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-md p-6 border border-red-100">
+                <p className="text-gray-500 text-sm font-semibold mb-2">To Do</p>
+                <p className="text-4xl font-bold text-red-600">{taskStats.toDo}</p>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-200">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Work Progress</h3>
-            <span className="text-3xl font-bold text-green-600">{getCompletionPercentage()}%</span>
-          </div>
-          <div className="w-full bg-gray-100 rounded-full h-3">
-            <div
-              className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-500"
-              style={{ width: `${getCompletionPercentage()}%` }}
-            ></div>
-          </div>
-          <p className="text-gray-500 text-sm mt-4">
-            {taskStats.completed} of {taskStats.total} tasks completed
-          </p>
         </div>
       </div>
     </div>
