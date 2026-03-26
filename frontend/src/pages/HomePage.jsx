@@ -45,23 +45,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="modern-stats">
-        <div className="stat-item">
-          <div className="stat-number">500+</div>
-          <div className="stat-label">Active Users</div>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-number">10K+</div>
-          <div className="stat-label">Tasks Completed</div>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-number">99.9%</div>
-          <div className="stat-label">Uptime</div>
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
       <section className="modern-cta">
