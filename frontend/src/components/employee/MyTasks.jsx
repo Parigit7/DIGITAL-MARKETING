@@ -9,6 +9,8 @@ function MyTasks({ user }) {
   const [editingTask, setEditingTask] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [selectedTask, setSelectedTask] = useState(null)
+const [showViewModal, setShowViewModal] = useState(false)
 
   const [formData, setFormData] = useState({
     taskStatus: 'TO_DO',
@@ -29,6 +31,10 @@ function MyTasks({ user }) {
       setLoading(false)
     }
   }
+  const handleView = (task) => {
+  setSelectedTask(task)
+  setShowViewModal(true)
+}
 
   const getFilteredTasks = () => {
     let filtered = tasks
@@ -157,13 +163,65 @@ function MyTasks({ user }) {
               <button onClick={() => handleEdit(task)} className="btn btn-primary btn-sm flex-1">
                 Update Status
               </button>
-              <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger btn-sm flex-1">
-                Delete
-              </button>
+              <button 
+              onClick={() => handleView(task)} 
+              className="btn btn-secondary btn-sm flex-1"
+            >
+              View
+            </button>
             </div>
           </div>
         ))}
       </div>
+      {showViewModal && selectedTask && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+
+    <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative animate-fadeIn">
+
+      {/* Close */}
+      <button
+        onClick={() => setShowViewModal(false)}
+        className="absolute top-3 right-4 text-gray-500 hover:text-black text-xl"
+      >
+        ×
+      </button>
+
+      {/* Title */}
+      <h2 className="text-2xl font-bold mb-4">
+        {selectedTask.title}
+      </h2>
+
+      {/* Content */}
+      <div className="space-y-3 text-sm text-gray-700">
+
+        <p><strong>Company:</strong> {selectedTask.companyName || 'N/A'}</p>
+
+        <p><strong>Status:</strong> {selectedTask.taskStatus.replace('_', ' ')}</p>
+
+        <p><strong>Completed Date:</strong> {selectedTask.completedDate}</p>
+
+        <p><strong>Salary:</strong> Rs. {selectedTask.salary || 0}</p>
+
+        <div>
+          <strong>Description:</strong>
+          <p className="mt-1 text-gray-600">
+            {selectedTask.description}
+          </p>
+        </div>
+
+        {selectedTask.links && (
+          <div>
+            <strong>Links:</strong>
+            <p className="text-blue-600 break-all mt-1">
+              {selectedTask.links}
+            </p>
+          </div>
+        )}
+
+      </div>
+    </div>
+  </div>
+)}
 
       {filteredTasks.length === 0 && !loading && (
         <div className="card text-center py-12">
