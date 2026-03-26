@@ -36,7 +36,9 @@ function TaskManagement() {
   const fetchEmployees = async () => {
     try {
       const response = await employeeAPI.getActive()
-      setEmployees(response.data)
+      // Filter out admins - only show regular employees
+      const regularEmployees = response.data.filter((emp) => !emp.admin && emp.jobRole !== 'Admin')
+      setEmployees(regularEmployees)
     } catch (error) {
       console.error('Error fetching employees:', error)
     }

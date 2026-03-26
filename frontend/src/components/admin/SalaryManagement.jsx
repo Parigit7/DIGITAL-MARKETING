@@ -22,7 +22,9 @@ function SalaryManagement() {
   const fetchEmployees = async () => {
     try {
       const response = await employeeAPI.getAll()
-      setEmployees(response.data)
+      // Filter out admins - only show regular employees
+      const regularEmployees = response.data.filter((emp) => !emp.admin && emp.jobRole !== 'Admin')
+      setEmployees(regularEmployees)
     } catch (error) {
       console.error('Error fetching employees:', error)
     }
@@ -31,12 +33,33 @@ function SalaryManagement() {
   const fetchSalaries = async () => {
     setLoading(true)
     try {
-      if (filterMonth !== 'all' && filterYear) {
-        const response = await salaryAPI.getAll(filterYear, filterMonth)
-        setSalaries(response.data)
-      } else if (filterYear) {
-        const response = await salaryAPI.getAllTotal()
-        setSalaries(response.data)
+      if (filterYear) {
+        let allSalaries = []
+
+        if (filterMonth !== 'all') {
+          // Fetch specific month data
+          const response = await salaryAPI.getAll(filterYear, filterMonth)
+          allSalaries = response.data
+        } else {
+          // Fetch all 12 months for the selected year
+          for (let month = 1; month <= 12; month++) {
+            try {
+              const response = await salaryAPI.getAll(filterYear, month)
+              allSalaries = [...allSalaries, ...response.data]
+            } catch (error) {
+              // Continue if a month has no data
+              continue
+            }
+          }
+          // Remove duplicates by employee (keep latest)
+          const uniqueSalaries = {}
+          allSalaries.forEach((salary) => {
+            uniqueSalaries[salary.employeeId] = salary
+          })
+          allSalaries = Object.values(uniqueSalaries)
+        }
+
+        setSalaries(allSalaries)
       }
     } catch (error) {
       console.error('Error fetching salaries:', error)
@@ -49,7 +72,21 @@ function SalaryManagement() {
     fetchSalaries()
   }, [filterMonth, filterYear])
 
-  const totalSalary = salaries.reduce((sum, s) => sum + parseFloat(s.totalSalary || 0), 0)
+  const getFilteredSalaries = () => {
+    let filtered = salaries
+
+    // Always exclude admins from the table
+    filtered = filtered.filter((s) => s.jobRole !== 'Admin' && !s.admin)
+
+    // Filter by employee if selected (and not "all")
+    if (filterEmployee !== 'all') {
+      filtered = filtered.filter((s) => s.employeeId === parseInt(filterEmployee))
+    }
+
+    return filtered
+  }
+
+  const filteredSalaries = getFilteredSalaries()
 
   return (
     <div className="container mx-auto px-6 py-8">
@@ -115,7 +152,7 @@ function SalaryManagement() {
                 </tr>
               </thead>
               <tbody>
-                {salaries.map((salary) => (
+                {filteredSalaries.map((salary) => (
                   <tr key={salary.employeeId}>
                     <td className="font-semibold">{salary.employeeName}</td>
                     <td>{salary.jobRole}</td>
@@ -131,9 +168,11 @@ function SalaryManagement() {
             <div className="mt-6 pt-6 border-t border-gray-300">
               <div className="flex justify-end">
                 <div className="text-right">
-                  <p className="text-gray-600 mb-2">Total Salary (All Employees):</p>
+                  <p className="text-gray-600 mb-2">
+                    Total Salary {filterEmployee !== 'all' ? '(Selected Employee)' : '(All Employees)'}:
+                  </p>
                   <p className="text-3xl font-bold text-primary">
-                    Rs. {totalSalary.toFixed(2)}
+                    Rs. {filteredSalaries.reduce((sum, s) => sum + parseFloat(s.totalSalary || 0), 0).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -141,7 +180,7 @@ function SalaryManagement() {
           </>
         )}
 
-        {salaries.length === 0 && !loading && (
+        {filteredSalaries.length === 0 && !loading && (
           <div className="text-center py-8 text-gray-600">
             No salary data available for the selected period
           </div>
