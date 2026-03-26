@@ -67,7 +67,7 @@ const handleSubmit = async (e) => {
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
-          <h2 className="form-title">Admin Login</h2>
+          <h2 className="form-title">Login</h2>
 
           {error && (
             <div className="alert alert-error mb-4">
