@@ -9,7 +9,9 @@ function TaskManagement() {
   const [taskStatus, setTaskStatus] = useState('to-do')
   const [employees, setEmployees] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [showViewModal, setShowViewModal] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
+  const [selectedTask, setSelectedTask] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const monthNames = [
@@ -122,6 +124,11 @@ function TaskManagement() {
     setEditingTask(task)
     setFormData(task)
     setShowModal(true)
+  }
+
+  const handleView = (task) => {
+    setSelectedTask(task)
+    setShowViewModal(true)
   }
 
   const handleDelete = async (id) => {
@@ -240,8 +247,11 @@ function TaskManagement() {
             </div>
 
             <div className="flex gap-2">
-              <button onClick={() => handleEdit(task)} className="btn btn-primary btn-sm flex-1">
+              <button onClick={() => handleView(task)} className="btn btn-secondary btn-sm flex-1">
                 View
+              </button>
+              <button onClick={() => handleEdit(task)} className="btn btn-primary btn-sm flex-1">
+                Edit
               </button>
               <button onClick={() => handleDelete(task.id)} className="btn btn-danger btn-sm flex-1">
                 Delete
@@ -368,6 +378,76 @@ function TaskManagement() {
                 {loading ? 'Saving...' : 'Save Task'}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* View Modal */}
+      {showViewModal && selectedTask && (
+        <div className="modal">
+          <div className="modal-content">
+            <button onClick={() => setShowViewModal(false)} className="modal-close">
+              ×
+            </button>
+            <h2 className="text-2xl font-bold mb-6">{selectedTask.title}</h2>
+
+            <div className="space-y-4 text-sm">
+              <div>
+                <p className="text-gray-600">Company</p>
+                <p className="font-semibold">{selectedTask.companyName || 'N/A'}</p>
+              </div>
+
+              <div>
+                <p className="text-gray-600">Description</p>
+                <p className="font-semibold">{selectedTask.description}</p>
+              </div>
+
+              <div>
+                <p className="text-gray-600">Assigned Employee</p>
+                <p className="font-semibold">{selectedTask.assignedEmployeeName}</p>
+              </div>
+
+              <div>
+                <p className="text-gray-600">Status</p>
+                <p className="font-semibold">{selectedTask.taskStatus.replace('_', ' ')}</p>
+              </div>
+
+              <div>
+                <p className="text-gray-600">Completed Date</p>
+                <p className="font-semibold">{selectedTask.completedDate}</p>
+              </div>
+
+              <div>
+                <p className="text-gray-600">Salary</p>
+                <p className="font-semibold">Rs. {parseFloat(selectedTask.salary || 0).toFixed(2)}</p>
+              </div>
+
+              {selectedTask.links && (
+                <div>
+                  <p className="text-gray-600 mb-2">Links</p>
+                  <a
+                    href={selectedTask.links}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 hover:underline break-all font-semibold"
+                  >
+                    {selectedTask.links}
+                  </a>
+                </div>
+              )}
+
+              <div className="pt-4">
+                <button
+                  onClick={() => {
+                    setShowViewModal(false)
+                    handleEdit(selectedTask)
+                  }}
+                  className="btn btn-primary w-full"
+                >
+                  Edit Task
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -148,6 +148,7 @@ function MySalary({ user }) {
                   <th>Task Title</th>
                   <th>Company</th>
                   <th>Completed Date</th>
+                  <th>Links</th>
                   <th>Assigned Salary</th>
                 </tr>
               </thead>
@@ -157,6 +158,21 @@ function MySalary({ user }) {
                     <td className="font-semibold">{task.title}</td>
                     <td>{task.companyName || '-'}</td>
                     <td>{task.completedDate}</td>
+                    <td>
+                      {task.links ? (
+                        <a
+                          href={task.links}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 hover:underline text-sm truncate max-w-xs block"
+                          title={task.links}
+                        >
+                          View Links
+                        </a>
+                      ) : (
+                        <span className="text-gray-400 text-sm">-</span>
+                      )}
+                    </td>
                     <td className={task.salary ? 'text-primary font-semibold' : 'text-red-600'}>
                       {task.salary ? `Rs. ${parseFloat(task.salary).toFixed(2)}` : 'Not Salary Updated'}
                     </td>

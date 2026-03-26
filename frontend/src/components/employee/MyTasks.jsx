@@ -235,8 +235,15 @@ const [showViewModal, setShowViewModal] = useState(false)
         {selectedTask.links && (
           <div>
             <strong>Links:</strong>
-            <p className="text-blue-600 break-all mt-1">
-              {selectedTask.links}
+            <p className="mt-1">
+              <a 
+                href={selectedTask.links} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 hover:underline break-all"
+              >
+                {selectedTask.links}
+              </a>
             </p>
           </div>
         )}
