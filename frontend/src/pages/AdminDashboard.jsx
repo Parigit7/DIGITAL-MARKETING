@@ -89,6 +89,18 @@ function AdminHome() {
           const total = empTasks.length
           const progressPercent = total > 0 ? (completed / total) * 100 : 0
 
+          // Calculate salary earned in current month and year
+          const currentYearMonthSalary = empTasks
+            .filter((t) => {
+              if (t.taskStatus !== 'COMPLETED' || !t.completedDate) return false
+              const completedDate = new Date(t.completedDate)
+              return (
+                completedDate.getFullYear() === currentYear &&
+                completedDate.getMonth() + 1 === currentMonth
+              )
+            })
+            .reduce((sum, t) => sum + parseFloat(t.salary || 0), 0)
+
           return {
             id: emp.id,
             name: emp.name,
@@ -97,6 +109,7 @@ function AdminHome() {
             completedTasks: completed,
             pendingTasks: total - completed,
             progressPercent: progressPercent,
+            currentMonthSalary: currentYearMonthSalary,
           }
         })
         .sort((a, b) => b.progressPercent - a.progressPercent)
@@ -316,6 +329,10 @@ function AdminHome() {
                       <p className="text-sm text-gray-600">{emp.jobRole}</p>
                     </div>
                     <div className="text-right">
+                      <p className="text-lg font-bold text-green-600">
+                        Rs. {emp.currentMonthSalary.toFixed(2)}
+                      </p>
+                      <p className="text-xs text-gray-500 mb-2">This month</p>
                       <p className="text-2xl font-bold text-gray-900">
                         {Math.round(emp.progressPercent)}%
                       </p>
