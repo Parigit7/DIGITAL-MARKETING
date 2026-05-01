@@ -8,6 +8,7 @@ function MyProfile({ user }) {
   useEffect(() => {
     fetchProfile()
   }, [])
+  //my one
 
   const fetchProfile = async () => {
     try {
